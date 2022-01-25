@@ -1,8 +1,9 @@
 <template>
+    <component-input v-model="searchInput" class="input" placeholder="Поиск" />
     <transition-group name="list">
         <div v-if="!data.length" class="no-item" key="no-item">Список пуст</div>
             <template v-for="{ id, name } in data" :key="id">
-                <div class="item">
+                <div v-if="name.includes(searchInput)" class="item">
                     <component-checkbox :modelValue="checkedElementId === id" @change="onChange(id)">
                         <div class="label">
                             {{ id }} ---- {{ name }}
@@ -15,13 +16,15 @@
 
 <script>
 import ComponentCheckbox from '../UI/VCheckbox/VCheckbox'
+import ComponentInput from '../UI/VInput/VInput';
 import { MODEL_VALUE_CHECKED_ID } from '../../utils/events'
 import { useUserList } from './useUserList'
 
 export default {
     name: 'UserList',
     components: {
-        ComponentCheckbox
+        ComponentCheckbox,
+        ComponentInput,
     },
     props: {
         data: {
@@ -57,6 +60,10 @@ export default {
 .no-item {
     color: var(--white);
     font-size: 20px ;
+}
+
+.input {
+    color: var(--white) !important;
 }
 
 
